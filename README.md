@@ -2,6 +2,20 @@
 
 This project aims to identify potential arbitrage opportunities in the cryptocurrency market by analyzing price data from the Binance exchange. The analysis focuses on five currency pairs: BTCUSDT, EURUSDT, BTCEUR, USDTTRY, and BTCTRY. The project consists of four Python files: `binance_api.py`, `data_processing.py`, `main.py`, and `arbitrage_analysis.py`.
 
+## Getting Started
+
+Before running the project, make sure to install the required dependencies. You can do this by running the following command in your terminal or command prompt:
+`pip install -r requirements.txt`
+This will install the necessary packages listed in the `requirements.txt` file.
+
+## Customizing Currency Pairs
+
+If you want to analyze different currency pairs, you can easily do so by editing the `currency_pairs` array in the `main.py` file. For example:
+
+`currency_pairs = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']`
+
+Replace the existing currency pairs with the ones you want to analyze, and then run the main.py script to perform the arbitrage analysis on the new currency pairs.
+
 ## Key Components
 
 1. **Data Collection**: The `binance_api.py` file contains functions to fetch the latest bid and ask prices and historical data for the selected currency pairs using the Binance API.
