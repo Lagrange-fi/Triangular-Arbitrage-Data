@@ -23,12 +23,17 @@ def check_arbitrage_opportunities(log_rates, no_arbitrage_bounds):
 def calculate_historical_log_rates(parsed_historical_data):
     logging.info("Calculating historical log rates")
     historical_log_rates = {'loop1': [], 'loop2': []}
-    for data in zip(parsed_historical_data['BTCUSDT'], parsed_historical_data['EURUSDT'], parsed_historical_data['BTCEUR'], parsed_historical_data['USDTTRY'], parsed_historical_data['BTCTRY']):
-        btcusdt, eurusdt, btceur, usdttry, btctry = data
-        loop1 = np.log(btcusdt['close']) + np.log(btceur['close']) - np.log(eurusdt['close'])
-        loop2 = np.log(usdttry['close']) + np.log(btctry['close']) - np.log(btcusdt['close'])
-        historical_log_rates['loop1'].append(loop1)
-        historical_log_rates['loop2'].append(loop2)
+    btcusdt_close = np.array([entry['close'] for entry in parsed_historical_data['BTCUSDT']])
+    eurusdt_close = np.array([entry['close'] for entry in parsed_historical_data['EURUSDT']])
+    btceur_close = np.array([entry['close'] for entry in parsed_historical_data['BTCEUR']])
+    usdttry_close = np.array([entry['close'] for entry in parsed_historical_data['USDTTRY']])
+    btctry_close = np.array([entry['close'] for entry in parsed_historical_data['BTCTRY']])
+    
+    loop1 = np.log(btcusdt_close) + np.log(btceur_close) - np.log(eurusdt_close)
+    loop2 = np.log(usdttry_close) + np.log(btctry_close) - np.log(btcusdt_close)
+    
+    historical_log_rates['loop1'] = loop1.tolist()
+    historical_log_rates['loop2'] = loop2.tolist()
     logging.info("Historical log rates calculated")
     return historical_log_rates
 
