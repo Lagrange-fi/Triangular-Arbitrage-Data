@@ -14,7 +14,7 @@ If you want to analyze different currency pairs, you can easily do so by editing
 
 `currency_pairs = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT']`
 
-Replace the existing currency pairs with the ones you want to analyze, and then run the main.py script to perform the arbitrage analysis on the new currency pairs.
+Replace the existing currency pairs with the ones you want to analyze, then run the main.py script to perform the arbitrage analysis on the new currency pairs.
 
 ## Key Components
 
@@ -22,7 +22,7 @@ Replace the existing currency pairs with the ones you want to analyze, and then 
 
 2. **Data Processing**: The `data_processing.py` file processes the fetched data by converting bid and ask prices to their logarithmic form and parsing the historical data to extract relevant information.
 
-3. **Arbitrage Analysis**: The `arbitrage_analysis.py` file contains functions to calculate log rates, historical log rates, estimate no-arbitrage bounds, and check for arbitrage opportunities.
+3. **Arbitrage Analysis**: The `arbitrage_analysis.py` file contains functions to calculate log rates, and historical log rates, estimate no-arbitrage bounds and check for arbitrage opportunities.
 
 4. **Main Script**: The `main.py` file is the main script that combines the functions from the other files to perform the complete analysis. It fetches and processes the data, calculates historical log rates, estimates no-arbitrage bounds, and checks for arbitrage opportunities.
 
@@ -37,3 +37,19 @@ Replace the existing currency pairs with the ones you want to analyze, and then 
 7. Check for arbitrage opportunities by comparing the current log rates with the no-arbitrage bounds.
 
 The output of the project provides the no-arbitrage bounds for both loops and indicates whether there are any arbitrage opportunities for each loop. If the current log rate for a loop is outside the no-arbitrage bounds, it suggests a potential arbitrage opportunity.
+
+## Testing
+
+The test_project.py file is organized into three test classes, each corresponding to a module in your project:
+
+1.  **TestBinanceAPI**: This class contains test cases for the functions in the `binance_api.py` module. It tests the `get_binance_data`, `fetch_prices`, and `fetch_historical_data` functions to ensure they fetch the correct data from the Binance API.
+
+2.  **TestDataProcessing**: This class contains test cases for the functions in the `data_processing.py` module. It tests the `convert_to_log` and `parse_historical_data` functions to ensure they correctly process the fetched data.
+
+3.  **TestArbitrageAnalysis**: This class contains test cases for the functions in the `arbitrage_analysis.py` module. It tests the `calculate_log_rates`, `check_arbitrage_opportunities`, `calculate_historical_log_rates`, and `estimate_no_arbitrage_bounds` functions to ensure they correctly analyze the processed data and identify arbitrage opportunities.
+
+Each test case in these classes checks if the corresponding function produces the expected output for a given input. The test cases cover various scenarios, including different data samples, invalid inputs, and edge cases. The tests help ensure that your code is reliable, robust, and efficient.
+
+To run the tests, execute the following command:
+
+`python test_project.py`
