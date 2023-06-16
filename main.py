@@ -1,6 +1,9 @@
 from binance_api import fetch_prices, fetch_historical_data
 from data_processing import convert_to_log, parse_historical_data
 from arbitrage_analysis import calculate_log_rates, check_arbitrage_opportunities, calculate_historical_log_rates, estimate_no_arbitrage_bounds
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 currency_pairs = ['BTCUSDT', 'EURUSDT', 'BTCEUR', 'USDTTRY', 'BTCTRY']
 

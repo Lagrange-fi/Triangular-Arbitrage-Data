@@ -1,10 +1,17 @@
 import requests
+import logging
 
 def get_binance_data(symbol):
-    url = f'https://api.binance.com/api/v3/ticker/bookTicker?symbol={symbol}'
-    response = requests.get(url)
-    data = response.json()
-    return data
+    logging.info(f"Fetching data for {symbol}")
+    try:
+        url = f'https://api.binance.com/api/v3/ticker/bookTicker?symbol={symbol}'
+        response = requests.get(url)
+        data = response.json()
+        logging.info(f"Data fetched for {symbol}")
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data for {symbol}: {e}")
+        return None
 
 def fetch_prices(currency_pairs):
     prices = {}
@@ -14,7 +21,13 @@ def fetch_prices(currency_pairs):
     return prices
 
 def fetch_historical_data(symbol, interval='1h', limit=500):
-    url = f'https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}'
-    response = requests.get(url)
-    data = response.json()
-    return data
+    logging.info(f"Fetching historical data for {symbol}")
+    try:
+        url = f'https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}'
+        response = requests.get(url)
+        data = response.json()
+        logging.info(f"Historical data fetched for {symbol}")
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data for {symbol}: {e}")
+        return None
