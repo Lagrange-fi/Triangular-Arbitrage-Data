@@ -24,8 +24,18 @@ def fetch_prices(currency_pairs):
 
 def fetch_available_pairs():
     url = "https://api.binance.com/api/v3/exchangeInfo"
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print("Error fetching available pairs:", e)
+        return []
+
     data = response.json()
+
+    if 'symbols' not in data:
+        print("Error fetching available pairs:", data)
+        return []
 
     available_pairs = [symbol['symbol'] for symbol in data['symbols'] if symbol['status'] == 'TRADING']
     return available_pairs
