@@ -1,10 +1,12 @@
 import numpy as np
 import logging
 
-def calculate_log_rates(log_prices):
+def calculate_log_rates(log_prices, currency_pairs):
     logging.info("Calculating log rates")
-    loop1 = log_prices['BTCUSDT']['ask_log'] + log_prices['BTCEUR']['bid_log'] - log_prices['EURUSDT']['bid_log']
-    loop2 = log_prices['USDTTRY']['ask_log'] + log_prices['BTCTRY']['ask_log'] - log_prices['BTCUSDT']['bid_log']
+    
+    loop1 = log_prices[currency_pairs[0]]['ask_log'] + log_prices[currency_pairs[2]]['bid_log'] - log_prices[currency_pairs[1]]['bid_log']
+    loop2 = log_prices[currency_pairs[3]]['ask_log'] + log_prices[currency_pairs[4]]['ask_log'] - log_prices[currency_pairs[5]]['bid_log']
+    
     log_rates = {'loop1': loop1, 'loop2': loop2}
     logging.info("Log rates calculated")
     return log_rates
@@ -20,17 +22,19 @@ def check_arbitrage_opportunities(log_rates, no_arbitrage_bounds):
     logging.info("Arbitrage opportunities checked")
     return opportunities
 
-def calculate_historical_log_rates(parsed_historical_data):
+def calculate_historical_log_rates(parsed_historical_data, currency_pairs):
     logging.info("Calculating historical log rates")
     historical_log_rates = {'loop1': [], 'loop2': []}
-    btcusdt_close = np.array([entry['close'] for entry in parsed_historical_data['BTCUSDT']])
-    eurusdt_close = np.array([entry['close'] for entry in parsed_historical_data['EURUSDT']])
-    btceur_close = np.array([entry['close'] for entry in parsed_historical_data['BTCEUR']])
-    usdttry_close = np.array([entry['close'] for entry in parsed_historical_data['USDTTRY']])
-    btctry_close = np.array([entry['close'] for entry in parsed_historical_data['BTCTRY']])
+    pair1_close = np.array([entry['close'] for entry in parsed_historical_data[currency_pairs[0]]])
+    pair2_close = np.array([entry['close'] for entry in parsed_historical_data[currency_pairs[1]]])
+    pair3_close = np.array([entry['close'] for entry in parsed_historical_data[currency_pairs[2]]])
+    pair4_close = np.array([entry['close'] for entry in parsed_historical_data[currency_pairs[3]]])
+    pair5_close = np.array([entry['close'] for entry in parsed_historical_data[currency_pairs[4]]])
+    pair6_close = np.array([entry['close'] for entry in parsed_historical_data[currency_pairs[5]]])
+
     
-    loop1 = np.log(btcusdt_close) + np.log(btceur_close) - np.log(eurusdt_close)
-    loop2 = np.log(usdttry_close) + np.log(btctry_close) - np.log(btcusdt_close)
+    loop1 = np.log(pair1_close) + np.log(pair3_close) - np.log(pair2_close)
+    loop2 = np.log(pair4_close) + np.log(pair5_close) - np.log(pair6_close)
     
     historical_log_rates['loop1'] = loop1.tolist()
     historical_log_rates['loop2'] = loop2.tolist()

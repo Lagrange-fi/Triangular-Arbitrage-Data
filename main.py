@@ -24,13 +24,13 @@ def run_analysis(currency_pairs):
         parsed_data = parse_historical_data(data)
         parsed_historical_data[pair] = parsed_data
 
-    historical_log_rates = calculate_historical_log_rates(parsed_historical_data)
+    historical_log_rates = calculate_historical_log_rates(parsed_historical_data, currency_pairs)
 
     # Estimate no-arbitrage bounds
     no_arbitrage_bounds = estimate_no_arbitrage_bounds(historical_log_rates)
 
     # Calculate current log rates
-    current_log_rates = calculate_log_rates(log_prices)
+    current_log_rates = calculate_log_rates(log_prices, currency_pairs)
 
     # Check for arbitrage opportunities
     arbitrage_opportunities = check_arbitrage_opportunities(current_log_rates, no_arbitrage_bounds)
