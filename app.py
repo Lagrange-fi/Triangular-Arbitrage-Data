@@ -29,7 +29,7 @@ def index():
             analysis_thread = Thread(target=main.start_real_time_analysis, args=(currency_pairs, no_arbitrage_bounds))
             analysis_thread.start()
 
-    return render_template('index.html', results=results)
+    return render_template('index.html', results=results, currency_pairs=currency_pairs)
 
 def validate_currency_pairs(currency_pairs):
     available_pairs = fetch_available_pairs()

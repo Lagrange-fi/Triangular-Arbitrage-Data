@@ -16,6 +16,7 @@ def convert_to_log(prices):
 def parse_historical_data(data):
     logging.info("Parsing historical data")
     parsed_data = [{
+        'date': datetime.datetime.fromtimestamp(entry[0] / 1000),
         'timestamp': datetime.datetime.fromtimestamp(entry[0] / 1000),
         'open': float(entry[1]),
         'high': float(entry[2]),

@@ -1,6 +1,18 @@
 import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+import seaborn as sns
 import logging
 import concurrent.futures
+
+matplotlib.use('Agg')
+
+def plot_data(data, title, filename):
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(data=data)
+    plt.title(title)
+    plt.savefig(filename)
+    plt.close()
 
 def _calculate_log_rate_single_loop(args):
     log_prices, currency_pairs, loop = args
@@ -49,6 +61,11 @@ def calculate_historical_log_rates(parsed_historical_data, currency_pairs):
     historical_log_rates['loop1'] = loop1.tolist()
     historical_log_rates['loop2'] = loop2.tolist()
     logging.info("Historical log rates calculated")
+
+    # Plot the historical log rates
+    plot_data(historical_log_rates['loop1'], "Historical Log Rates - Loop 1", "static/historical_log_rates_loop1.png")
+    plot_data(historical_log_rates['loop2'], "Historical Log Rates - Loop 2", "static/historical_log_rates_loop2.png")
+
     return historical_log_rates
 
 def estimate_no_arbitrage_bounds(historical_log_rates, confidence_interval=0.95):

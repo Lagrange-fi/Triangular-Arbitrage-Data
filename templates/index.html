@@ -41,17 +41,48 @@
         <input type="submit" value="Run Analysis" class="btn btn-primary">
     </form>
     {% if results %}
+        {% set base_currency = currency_pairs[0][-4:] %}
+        {% set currency_1 = currency_pairs[0][:3] %}
+        {% set currency_2 = currency_pairs[1][:3] %}
+        {% set currency_3 = currency_pairs[3][-3:] %}
         <h2 class="my-4">Results:</h2>
-        <div class="card">
+        <div class="card my-4">
             <div class="card-body">
-                <h5 class="card-title">No-Arbitrage Bounds</h5>
-                <p class="card-text">{{ results.no_arbitrage_bounds }}</p>
+                <h5 class="card-title">Historical Log Rates - {{ base_currency }} → {{ currency_1 }} → {{ currency_2 }} → {{ base_currency }}</h5>
+                <img src="{{ url_for('static', filename='historical_log_rates_loop1.png') }}" alt="Historical Log Rates - Loop 1" class="img-fluid">
+                <h5 class="card-title">Historical Log Rates - {{ base_currency }} → {{ currency_1 }} → {{ currency_3 }} → {{ base_currency }}</h5>
+                <img src="{{ url_for('static', filename='historical_log_rates_loop2.png') }}" alt="Historical Log Rates - Loop 2" class="img-fluid">
+            </div>
+        </div>
+        <div class="card my-4">
+            <div class="card-body">
+                <h5 class="card-title">No-Arbitrage Bounds - {{ base_currency }} → {{ currency_1 }} → {{ currency_2 }} → {{ base_currency }}</h5>
+                <img src="{{ url_for('static', filename='no_arbitrage_bounds_loop1.png') }}" alt="No-Arbitrage Bounds - Loop 1" class="img-fluid">
+                <h5 class="card-title">No-Arbitrage Bounds - {{ base_currency }} → {{ currency_1 }} → {{ currency_3 }} → {{ base_currency }}</h5>
+                <img src="{{ url_for('static', filename='no_arbitrage_bounds_loop2.png') }}" alt="No-Arbitrage Bounds - Loop 2" class="img-fluid">
             </div>
         </div>
         <div class="card my-4">
             <div class="card-body">
                 <h5 class="card-title">Arbitrage Opportunities</h5>
-                <p class="card-text">{{ results.arbitrage_opportunities }}</p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Loop</th>
+                            <th scope="col">Arbitrage Opportunity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Loop 1</td>
+                            <td>{{ results.arbitrage_opportunities.loop1 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Loop 2</td>
+                            <td>{{ results.arbitrage_opportunities.loop2 }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     {% endif %}

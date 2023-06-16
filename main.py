@@ -1,6 +1,6 @@
 from binance_api import fetch_prices, fetch_historical_data, generate_ws_url
 from data_processing import convert_to_log, parse_historical_data
-from arbitrage_analysis import calculate_log_rates, check_arbitrage_opportunities, calculate_historical_log_rates, estimate_no_arbitrage_bounds
+from arbitrage_analysis import calculate_log_rates, check_arbitrage_opportunities, calculate_historical_log_rates, estimate_no_arbitrage_bounds, plot_data
 import logging
 import websocket
 import json
@@ -68,6 +68,12 @@ async def run_analysis(currency_pairs):
 
     # Estimate no-arbitrage bounds
     no_arbitrage_bounds = estimate_no_arbitrage_bounds(historical_log_rates)
+    
+
+    # Plot the no-arbitrage bounds
+    plot_data(no_arbitrage_bounds['loop1'], "No-Arbitrage Bounds - Loop 1", "static/no_arbitrage_bounds_loop1.png")
+    plot_data(no_arbitrage_bounds['loop2'], "No-Arbitrage Bounds - Loop 2", "static/no_arbitrage_bounds_loop2.png")
+
 
     # Calculate current log rates
     current_log_rates = calculate_log_rates(log_prices, currency_pairs)
