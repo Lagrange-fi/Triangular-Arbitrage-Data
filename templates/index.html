@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="my-4">Arbitrage Analysis</h1>
+    <p>
+        You should write 6 pairs for the analysis. For example, to create a USD → BTC → EUR → USD and
+        USD → TRY → BTC → USD triangular arbitrage, you need to type the following pairs: 'BTCUSDT', 'EURUSDT', 'BTCEUR', 'USDTTRY', 'BTCTRY', 'BTCUSDT'.
+    </p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST">
+        <div class="mb-3">
+            <label for="currency_pair_1" class="form-label">Currency Pair 1</label>
+            <input type="text" class="form-control" id="currency_pair_1" name="currency_pair_1" value="BTCUSDT" required>
+        </div>
+        <div class="mb-3">
+            <label for="currency_pair_2" class="form-label">Currency Pair 2</label>
+            <input type="text" class="form-control" id="currency_pair_2" name="currency_pair_2" value="EURUSDT" required>
+        </div>
+        <div class="mb-3">
+            <label for="currency_pair_3" class="form-label">Currency Pair 3</label>
+            <input type="text" class="form-control" id="currency_pair_3" name="currency_pair_3" value="BTCEUR" required>
+        </div>
+        <div class="mb-3">
+            <label for="currency_pair_4" class="form-label">Currency Pair 4</label>
+            <input type="text" class="form-control" id="currency_pair_4" name="currency_pair_4" value="USDTTRY" required>
+        </div>
+        <div class="mb-3">
+            <label for="currency_pair_5" class="form-label">Currency Pair 5</label>
+            <input type="text" class="form-control" id="currency_pair_5" name="currency_pair_5" value="BTCTRY" required>
+        </div>
+        <div class="mb-3">
+            <label for="currency_pair_6" class="form-label">Currency Pair 6</label>
+            <input type="text" class="form-control" id="currency_pair_6" name="currency_pair_6" value="BTCUSDT" required>
+        </div>
+        <input type="submit" value="Run Analysis" class="btn btn-primary">
+    </form>
+    {% if results %}
+        <h2 class="my-4">Results:</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">No-Arbitrage Bounds</h5>
+                <p class="card-text">{{ results.no_arbitrage_bounds }}</p>
+            </div>
+        </div>
+        <div class="card my-4">
+            <div class="card-body">
+                <h5 class="card-title">Arbitrage Opportunities</h5>
+                <p class="card-text">{{ results.arbitrage_opportunities }}</p>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
