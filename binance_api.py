@@ -22,6 +22,13 @@ def fetch_prices(currency_pairs):
         prices[pair] = {'bid': data['bidPrice'], 'ask': data['askPrice']}
     return prices
 
+def fetch_available_pairs():
+    url = "https://api.binance.com/api/v3/exchangeInfo"
+    response = requests.get(url)
+    data = response.json()
+
+    available_pairs = [symbol['symbol'] for symbol in data['symbols'] if symbol['status'] == 'TRADING']
+    return available_pairs
 
 def fetch_historical_data(symbol, interval='1h', limit=500):
     logging.info(f"Fetching historical data for {symbol}")
