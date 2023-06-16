@@ -5,9 +5,9 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def run_analysis(currency_pairs):
+async def run_analysis(currency_pairs):
     # Fetch prices
-    prices = fetch_prices(currency_pairs)
+    prices = await fetch_prices(currency_pairs)
 
     # Convert prices to logarithmic form
     log_prices = convert_to_log(prices)

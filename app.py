@@ -3,6 +3,7 @@ import secrets
 from flask import Flask, render_template, request, flash
 import main
 from binance_api import fetch_available_pairs
+import asyncio
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16) # Generates a random 32-character-long hexadecimal string
@@ -20,7 +21,7 @@ def index():
             request.form['currency_pair_6']
         ]
         if validate_currency_pairs(currency_pairs):
-            results = main.run_analysis(currency_pairs)
+            results = asyncio.run(main.run_analysis(currency_pairs))
     return render_template('index.html', results=results)
 
 def validate_currency_pairs(currency_pairs):
