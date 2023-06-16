@@ -1,15 +1,25 @@
 import numpy as np
 import logging
+import concurrent.futures
+
+def _calculate_log_rate_single_loop(args):
+    log_prices, currency_pairs, loop = args
+    if loop == 'loop1':
+        return log_prices[currency_pairs[0]]['ask_log'] + log_prices[currency_pairs[2]]['bid_log'] - log_prices[currency_pairs[1]]['bid_log']
+    elif loop == 'loop2':
+        return log_prices[currency_pairs[3]]['ask_log'] + log_prices[currency_pairs[4]]['ask_log'] - log_prices[currency_pairs[5]]['bid_log']
 
 def calculate_log_rates(log_prices, currency_pairs):
     logging.info("Calculating log rates")
-    
-    loop1 = log_prices[currency_pairs[0]]['ask_log'] + log_prices[currency_pairs[2]]['bid_log'] - log_prices[currency_pairs[1]]['bid_log']
-    loop2 = log_prices[currency_pairs[3]]['ask_log'] + log_prices[currency_pairs[4]]['ask_log'] - log_prices[currency_pairs[5]]['bid_log']
-    
-    log_rates = {'loop1': loop1, 'loop2': loop2}
+    logging.debug(f"log_prices: {log_prices}")
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        args = [(log_prices, currency_pairs, loop) for loop in ['loop1', 'loop2']]
+        log_rates = list(executor.map(_calculate_log_rate_single_loop, args))
+
+    log_rates_dict = {'loop1': log_rates[0], 'loop2': log_rates[1]}
     logging.info("Log rates calculated")
-    return log_rates
+    return log_rates_dict
 
 def check_arbitrage_opportunities(log_rates, no_arbitrage_bounds):
     logging.info("Checking arbitrage opportunities")

@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, flash
 import main
 from binance_api import fetch_available_pairs
 import asyncio
+from threading import Thread
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16) # Generates a random 32-character-long hexadecimal string
@@ -22,6 +23,12 @@ def index():
         ]
         if validate_currency_pairs(currency_pairs):
             results = asyncio.run(main.run_analysis(currency_pairs))
+            no_arbitrage_bounds = results['no_arbitrage_bounds']
+
+            # Start real-time analysis in a separate thread
+            analysis_thread = Thread(target=main.start_real_time_analysis, args=(currency_pairs, no_arbitrage_bounds))
+            analysis_thread.start()
+
     return render_template('index.html', results=results)
 
 def validate_currency_pairs(currency_pairs):

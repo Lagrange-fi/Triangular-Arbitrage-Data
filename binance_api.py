@@ -27,6 +27,17 @@ async def fetch_prices(currency_pairs):
         prices[pair] = {'bid': data['bidPrice'], 'ask': data['askPrice']}
     return prices
 
+def generate_ws_url(currency_pairs):
+    base_url = "wss://stream.binance.com:9443/stream?streams="
+    streams = []
+
+    for pair in currency_pairs:
+        symbol = pair.replace("/", "").lower()
+        streams.append(f"{symbol}@bookTicker")
+
+    ws_url = base_url + "/".join(streams)
+    return ws_url
+
 def fetch_available_pairs():
     url = "https://api.binance.com/api/v3/exchangeInfo"
     try:
