@@ -2,12 +2,13 @@ import unittest
 from binance_api import get_binance_data, fetch_prices, fetch_historical_data
 from data_processing import convert_to_log, parse_historical_data
 from arbitrage_analysis import calculate_log_rates, check_arbitrage_opportunities, calculate_historical_log_rates, estimate_no_arbitrage_bounds
+import asyncio
 
 class TestBinanceAPI(unittest.TestCase):
     def test_get_binance_data(self):
         # Test case for get_binance_data function
         symbol = 'BTCUSDT'
-        data = get_binance_data(symbol)
+        data = asyncio.run(get_binance_data(symbol))
         self.assertIsNotNone(data)
         self.assertIn('bidPrice', data)
         self.assertIn('askPrice', data)
@@ -15,7 +16,7 @@ class TestBinanceAPI(unittest.TestCase):
     def test_fetch_prices(self):
         # Test case for fetch_prices function
         currency_pairs = ['BTCUSDT']
-        prices = fetch_prices(currency_pairs)
+        prices = asyncio.run(fetch_prices(currency_pairs))
         self.assertIsNotNone(prices)
         self.assertIn('BTCUSDT', prices)
 
@@ -52,6 +53,7 @@ class TestDataProcessing(unittest.TestCase):
 
 class TestArbitrageAnalysis(unittest.TestCase):
     def test_calculate_log_rates(self):
+        currency_pairs = ['BTCUSDT', 'BTCEUR', 'EURUSDT', 'USDTTRY', 'BTCTRY', 'BTCUSDT']
         # Test case for calculate_log_rates function
         log_prices = {
             'BTCUSDT': {'ask_log': 9.21044003427029, 'bid_log': 9.210340371976184},
@@ -60,7 +62,7 @@ class TestArbitrageAnalysis(unittest.TestCase):
             'USDTTRY': {'ask_log': 2.1400661634962708, 'bid_log': 2.1399665012021647},
             'BTCTRY': {'ask_log': 11.350506534672205, 'bid_log': 11.350406872378099}
         }
-        log_rates = calculate_log_rates(log_prices)
+        log_rates = calculate_log_rates(log_prices, currency_pairs)
         self.assertIsNotNone(log_rates)
         self.assertIn('loop1', log_rates)
         self.assertIn('loop2', log_rates)
@@ -76,6 +78,7 @@ class TestArbitrageAnalysis(unittest.TestCase):
 
     def test_calculate_historical_log_rates(self):
         # Test case for calculate_historical_log_rates function
+        currency_pairs = ['BTCUSDT', 'BTCEUR', 'EURUSDT', 'USDTTRY', 'BTCTRY', 'BTCUSDT']
         sample_parsed_historical_data = {
             'BTCUSDT': [{'close': 10000.0}],
             'EURUSDT': [{'close': 1.2}],
@@ -83,7 +86,8 @@ class TestArbitrageAnalysis(unittest.TestCase):
             'USDTTRY': [{'close': 8.5}],
             'BTCTRY': [{'close': 85000.0}]
         }
-        historical_log_rates = calculate_historical_log_rates(sample_parsed_historical_data)
+        historical_log_rates = calculate_historical_log_rates(sample_parsed_historical_data, currency_pairs)
+        # ... rest of the test code
         self.assertIsNotNone(historical_log_rates)
         self.assertIn('loop1', historical_log_rates)
         self.assertIn('loop2', historical_log_rates)
