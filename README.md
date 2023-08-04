@@ -1,4 +1,4 @@
-# Cryptocurrency Arbitrage Analysis
+# Triangular Arbitrage Analysis
 
 This project aims to identify potential arbitrage opportunities in the cryptocurrency market by analyzing price data from the Binance exchange. The analysis mainly focused on five currency pairs: BTCUSDT, EURUSDT, BTCEUR, USDTTRY, and BTCTRY. Users can now change these pairs via the UI. The project consists of four Python files: `binance_api.py`, `data_processing.py`, `main.py`, and `arbitrage_analysis.py`.
 
