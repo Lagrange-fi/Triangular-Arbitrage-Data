@@ -12,6 +12,7 @@ app.secret_key = secrets.token_hex(16) # Generates a random 32-character-long he
 @app.route('/', methods=['GET', 'POST'])
 def index():
     results = None
+    currency_pairs = []
     if request.method == 'POST':
         currency_pairs = [
             request.form['currency_pair_1'],
